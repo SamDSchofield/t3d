@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-requirements = ['Click>=7.0']
+requirements = ['Click>=7.0', 'transforms3d']
 
 setup_requirements = ['pytest-runner', "numpy"]
 
