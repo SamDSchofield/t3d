@@ -52,6 +52,14 @@ def apply_T(T, points):
     return points_transformed
 
 
+def apply_offset_before(trajectory, offset):
+    offset_trajectory = []
+    for pose in trajectory:
+        offset_pose = np.matmul(offset, pose)
+        offset_trajectory.append(offset_pose)
+    return np.array(offset_trajectory)
+
+
 def apply_offset(trajectory, offset):
     offset_trajectory = []
     for pose in trajectory:
@@ -90,3 +98,10 @@ def traj_array2mat(trajectory):
         pose_mat = compose_transform(position, rotation_mat)
         mats.append(pose_mat)
     return stamps, np.array(mats)
+
+
+def traj_mat2array(stamps, mat_traj):
+    flat_traj = []
+    for stamp, pose in zip(stamps, mat_traj):
+        flat_traj.append(T_to_line(pose, stamp))
+    return flat_traj
