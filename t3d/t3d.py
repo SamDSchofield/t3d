@@ -7,6 +7,11 @@ import transforms3d
 
 
 def T_from_line(line):
+    """Takes a stamp, x,y,z,q w,qx,qy,qz array and converts it to a 4x4 matrix
+
+    :param line: 1x8 array
+    :return: 4x4 array
+    """
     t = line[1:4]
     quat = line[4:]
     return T_from_quat(t, quat)
