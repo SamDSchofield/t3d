@@ -7,7 +7,7 @@ import transforms3d
 
 
 def T_from_line(line):
-    """Takes a stamp, x,y,z,q w,qx,qy,qz array and converts it to a 4x4 matrix
+    """Takes a stamp,x,y,z,q w,qx,qy,qz array and converts it to a 4x4 matrix
 
     :param line: 1x8 array
     :return: 4x4 array
@@ -18,6 +18,7 @@ def T_from_line(line):
 
 
 def T_to_line(T, stamp):
+    """Take a 4x4 transform and a stamp and returns stamp,x,y,z,q w,qx,qy,qz"""
     t, r, _, _ = transforms3d.affines.decompose(T)
     r_quat = transforms3d.quaternions.mat2quat(r)
     return np.hstack((stamp, t, r_quat))
@@ -43,6 +44,17 @@ def T_to_vec(T):
     t, r_mat, _, _ = transforms3d.affines.decompose(T)
     r_vec, _ = cv2.Rodrigues(r_mat)
     return t, r_vec.flatten()
+
+
+def Ts_to_lines(Ts, stamps):
+    lines = []
+    for T, stamp in zip(Ts, stamps):
+        lines.append(T_to_line(T, stamp))
+    return np.array(lines)
+
+
+def Ts_from_lines(lines):
+    return np.array([T_from_line(line) for line in lines])
 
 
 def apply_T(T, points):
